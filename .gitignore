@@ -94,3 +94,9 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
+# Other files and folders to ignore
+Transition_to_monolith.md
+MONOLITH_ARCHITECTURE.md
+docker-compose.yml
+Dockerfile
+.dockerignore
