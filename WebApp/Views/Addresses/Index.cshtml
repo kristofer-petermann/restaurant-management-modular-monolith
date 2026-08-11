@@ -1,0 +1,86 @@
+@model IEnumerable<Shared.Contracts.Restaurants.AddressDto>
+
+@{
+    ViewData["Title"] = "Index";
+    var canManage = User.Identity?.IsAuthenticated == true; 
+    var isRoot = User.IsInRole("root");
+    var isAdmin = User.IsInRole("admin");
+    var currentUserId = ViewData["CurrentUserId"] as Guid?;
+    var adminRestaurantIds = (ViewData["AdminRestaurantIds"] as IEnumerable<Guid>)?.ToHashSet() ?? new HashSet<Guid>();
+}
+
+<h1>Index</h1>
+
+@if (canManage)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th>Restaurant</th>
+            @if (isRoot || isAdmin)
+            {
+            <th>User</th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+    var isRestaurantAdminForAddress = item.RestaurantId.HasValue && adminRestaurantIds.Contains(item.RestaurantId.Value);
+    var canManageAddress = canManage && (isRoot || item.UserId == currentUserId || isRestaurantAdminForAddress);
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>@(item.Restaurant?.RestaurantName ?? item.RestaurantId?.ToString())</td>
+            @if (isRoot || isAdmin)
+            {
+            <td>@(item.User?.Email ?? "-")</td>
+            }
+            <td>
+                @if (canManageAddress)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    @:|
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                @if (canManageAddress)
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

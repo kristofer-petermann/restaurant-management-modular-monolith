@@ -1,0 +1,86 @@
+@using Base.Helpers
+@model IEnumerable<Shared.Contracts.Restaurants.ReviewDto>
+
+@{
+    ViewData["Title"] = App.Resources.Views.Home.Reviews;
+    var canCreate = User.Identity?.IsAuthenticated == true;
+    var currentUserId = canCreate ? User.GetUserId() : Guid.Empty;
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>@(App.Resources.Views.Home.Reviews)</h1>
+        <p>Moderate restaurant reviews, ratings, and review ownership.</p>
+    </div>
+    @if (canCreate)
+    {
+        <div class="admin-page-actions">
+            <a class="admin-button admin-button-primary" asp-action="Create">New review</a>
+        </div>
+    }
+</section>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser!.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Restaurant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @(item.AppUser?.Email ?? item.UserId.ToString())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Restaurant!.RestaurantName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                <div class="admin-table-actions">
+                    @{
+                        var canManageRow = User.IsInRole("root") || User.IsInRole("admin") || item.UserId == currentUserId;
+                    }
+                    @if (canManageRow)
+                    {
+                        <a class="admin-row-action" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a class="admin-row-action" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (canManageRow)
+                    {
+                        <a class="admin-row-action danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

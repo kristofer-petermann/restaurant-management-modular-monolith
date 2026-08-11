@@ -1,0 +1,17 @@
+using AwesomeAssertions;
+using Microsoft.Playwright;
+using WebApp.Tests.Helpers;
+namespace WebApp.Tests.E2E;
+[Trait("Category","E2E")][Collection("E2E")]
+public class OrdersMvcController_E2E
+{
+    private readonly PlaywrightWebAppFactory _f; public OrdersMvcController_E2E(PlaywrightWebAppFactory f)=>_f=f;
+    private async Task<(IPlaywright pw, IBrowser b)> NB(){var pw=await Playwright.CreateAsync();var b=await pw.Chromium.ConnectAsync("ws://localhost:3000/");return(pw,b);}
+    private async Task<IPage> NP(IBrowser b)=>await (await b.NewContextAsync()).NewPageAsync();
+    [Fact] public async Task Index_Anonymous_RedirectsToLogin(){var (pw,b)=await NB();try{var p=await NP(b);await p.GotoAsync($"{_f.RootUri}/Orders");p.Url.Should().Contain("/Identity/Account/Login");}finally{await b.DisposeAsync();pw.Dispose();}}
+    [Fact] public async Task Index_AsUser_ShowsAccessibleOrders(){var (pw,b)=await NB();try{var p=await NP(b);await PlaywrightLoginHelper.LoginAsync(p,_f.RootUri,TestUsers.UserAEmail,TestUsers.Password);await PlaywrightLoginHelper.SetCultureAsync(p,_f.RootUri,"en");await p.GotoAsync($"{_f.RootUri}/Orders");var t=await p.Locator("body").TextContentAsync();t.Should().Contain("Pending");}finally{await b.DisposeAsync();pw.Dispose();}}
+    [Fact] public async Task Create_Edit_Details_Delete_RoundTrip(){var (pw,b)=await NB();try{var p=await NP(b);await PlaywrightLoginHelper.LoginAsync(p,_f.RootUri,TestUsers.UserAEmail,TestUsers.Password);await PlaywrightLoginHelper.SetCultureAsync(p,_f.RootUri,"en");await p.GotoAsync($"{_f.RootUri}/Orders/Create");await p.SelectOptionAsync("#RestaurantId",TestUsers.RestaurantAId.ToString());await p.FillAsync("#OrderStatus","New");await p.FillAsync("#TotalPrice","12.5");await p.FillAsync("#PickupTime","2026-05-19T18:00");await p.FillAsync("#Summary","summary-1");await p.ClickAsync("input[type=submit]");await p.WaitForURLAsync($"{_f.RootUri}/Orders");var id=await ExtractIdByRowContainsAsync(p,"New");await p.GotoAsync($"{_f.RootUri}/Orders/Edit/{id}");await p.FillAsync("#Summary","summary-1-updated");await p.ClickAsync("input[type=submit]");await p.WaitForURLAsync($"{_f.RootUri}/Orders");await p.GotoAsync($"{_f.RootUri}/Orders/Details/{id}");(await p.Locator("body").TextContentAsync()).Should().Contain("New");await p.GotoAsync($"{_f.RootUri}/Orders/Delete/{id}");await p.ClickAsync("input[type=submit]");await p.WaitForURLAsync($"{_f.RootUri}/Orders");}finally{await b.DisposeAsync();pw.Dispose();}}
+    [Fact] public async Task Edit_ForeignOrderId_Returns404_IDOR(){var (pw,b)=await NB();try{var p=await NP(b);await PlaywrightLoginHelper.LoginAsync(p,_f.RootUri,TestUsers.UserAEmail,TestUsers.Password);(await p.GotoAsync($"{_f.RootUri}/Orders/Edit/{TestUsers.OrderBId}"))!.Status.Should().Be(404);}finally{await b.DisposeAsync();pw.Dispose();}}
+    [Fact] public async Task Delete_ForeignOrderId_Returns404_IDOR(){var (pw,b)=await NB();try{var p=await NP(b);await PlaywrightLoginHelper.LoginAsync(p,_f.RootUri,TestUsers.UserAEmail,TestUsers.Password);(await p.GotoAsync($"{_f.RootUri}/Orders/Delete/{TestUsers.OrderBId}"))!.Status.Should().Be(404);}finally{await b.DisposeAsync();pw.Dispose();}}
+    private static async Task<Guid> ExtractIdByRowContainsAsync(IPage p,string txt){var row=p.Locator("tr").Filter(new(){HasTextString=txt});var href=await row.Locator("a:has-text('Details')").First.GetAttributeAsync("href");var idStr=href!.Substring(href.LastIndexOf('/')+1);return Guid.Parse(idStr);}
+}

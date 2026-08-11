@@ -1,0 +1,91 @@
+@model IEnumerable<Shared.Contracts.Restaurants.AddressDto>
+
+@{
+    ViewData["Title"] = App.Resources.Views.Home.Addresses;
+    var canManage = User.Identity?.IsAuthenticated == true; 
+    var isRoot = User.IsInRole("root");
+    var isAdmin = User.IsInRole("admin");
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>@(App.Resources.Views.Home.Addresses)</h1>
+        <p>Manage customer and restaurant addresses used for orders and profiles.</p>
+    </div>
+    @if (canManage)
+    {
+        <div class="admin-page-actions">
+            <a class="admin-button admin-button-primary" asp-action="Create">New address</a>
+        </div>
+    }
+</section>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            @if (isRoot || isAdmin)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Restaurant)
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            @if (isRoot || isAdmin)
+            {
+            <td>@(item.User?.Email ?? "-")</td>
+            <td>@(item.Restaurant?.RestaurantName ?? item.RestaurantId?.ToString())</td>
+            }
+            <td>
+                <div class="admin-table-actions">
+                    @if (canManage)
+                    {
+                        <a class="admin-row-action" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a class="admin-row-action" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (canManage)
+                    {
+                        <a class="admin-row-action danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

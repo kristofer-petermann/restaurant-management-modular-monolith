@@ -1,0 +1,69 @@
+@model IEnumerable<Shared.Contracts.Restaurants.RestaurantDto>
+
+@{
+    ViewData["Title"] = App.Resources.Views.Home.Restaurants;
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>@(App.Resources.Views.Home.Restaurants)</h1>
+        <p>Manage restaurant profiles, contact details, and short public summaries.</p>
+    </div>
+    <div class="admin-page-actions">
+        <a class="admin-button admin-button-primary" asp-action="Create">New restaurant</a>
+    </div>
+</section>
+
+<div class="admin-table-wrap">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RestaurantName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><strong>
+                @Html.DisplayFor(modelItem => item.RestaurantName)
+            </strong></td>
+            <td class="admin-muted">
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td class="admin-muted">
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                <div class="admin-table-actions">
+                    <a class="admin-row-action" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="admin-row-action" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="admin-row-action danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </div>
+            </td>
+        </tr>
+    }
+        </tbody>
+    </table>
+</div>

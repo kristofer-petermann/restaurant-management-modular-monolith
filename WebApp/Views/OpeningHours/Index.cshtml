@@ -1,0 +1,71 @@
+@model IEnumerable<Shared.Contracts.Restaurants.OpeningHourDto>
+
+@{
+    ViewData["Title"] = "Index";
+    var canManage = User.Identity?.IsAuthenticated == true && (User.IsInRole("root") || User.IsInRole("admin"));
+}
+
+<h1>Index</h1>
+
+@if (canManage)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Restaurant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DayOfWeek)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpenTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CloseTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Restaurant!.RestaurantName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayOfWeek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpenTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CloseTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                @if (canManage)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    @:|
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @if (canManage)
+                {
+                    @:|
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

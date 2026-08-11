@@ -1,0 +1,75 @@
+@model IEnumerable<Shared.Contracts.Restaurants.OpeningHourDto>
+
+@{
+    ViewData["Title"] = App.Resources.Views.Home.OpeningHours;
+    var canManage = User.Identity?.IsAuthenticated == true && (User.IsInRole("root") || User.IsInRole("admin"));
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>@(App.Resources.Views.Home.OpeningHours)</h1>
+        <p>Maintain weekly restaurant opening windows and operational summaries.</p>
+    </div>
+    @if (canManage)
+    {
+        <div class="admin-page-actions">
+            <a class="admin-button admin-button-primary" asp-action="Create">New opening hour</a>
+        </div>
+    }
+</section>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Restaurant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DayOfWeek)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpenTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CloseTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Restaurant!.RestaurantName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayOfWeek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpenTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CloseTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                <div class="admin-table-actions">
+                    @if (canManage)
+                    {
+                        <a class="admin-row-action" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a class="admin-row-action" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (canManage)
+                    {
+                        <a class="admin-row-action danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

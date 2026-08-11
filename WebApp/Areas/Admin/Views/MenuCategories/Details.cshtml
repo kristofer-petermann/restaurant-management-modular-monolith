@@ -1,0 +1,45 @@
+@model Shared.Contracts.Restaurants.MenuCategoryDto
+
+@{
+    ViewData["Title"] = "Category details";
+    var canManage = User.Identity?.IsAuthenticated == true && (User.IsInRole("root") || User.IsInRole("admin"));
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>Category details</h1>
+        <p>Menu category assignment, name, and summary.</p>
+    </div>
+    <div class="admin-page-actions">
+        @if (canManage)
+        {
+            <a class="admin-button admin-button-primary" asp-action="Edit" asp-route-id="@Model!.Id">Edit category</a>
+        }
+        <a class="admin-button admin-button-secondary" asp-action="Index">Back to categories</a>
+    </div>
+</section>
+
+<div>
+    <h4>MenuCategory</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Menu)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Menu!.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Summary)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Summary)
+        </dd>
+    </dl>
+</div>

@@ -1,0 +1,43 @@
+@model Shared.Contracts.Restaurants.MenuCategoryDto
+
+@{
+    ViewData["Title"] = "Delete category";
+}
+
+
+<section class="admin-danger-panel">
+    <h1>Delete category</h1>
+    <p>This action removes the category record. Review the details before confirming.</p>
+</section>
+<div>
+    <h4>MenuCategory</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Menu)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Menu!.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Summary)
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Summary
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="admin-form-actions">
+            <input type="submit" value="Delete category" class="btn btn-danger" />
+            <a class="admin-button admin-button-secondary" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+</div>

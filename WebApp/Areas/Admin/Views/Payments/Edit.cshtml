@@ -1,0 +1,58 @@
+@model WebApp.Areas.Admin.ViewModels.Payment.PaymentEditViewModel
+
+@{
+    ViewData["Title"] = "Edit payment";
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>Edit payment</h1>
+        <p>Update payment amount, method, status, and paid time.</p>
+    </div>
+</section>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderId" class="control-label"></label>
+                <select asp-for="OrderId" class="form-control" asp-items="Model.OrderOptions"></select>
+                <span asp-validation-for="OrderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentStatus" class="control-label"></label>
+                <input asp-for="PaymentStatus" class="form-control" />
+                <span asp-validation-for="PaymentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentMethod" class="control-label"></label>
+                <input asp-for="PaymentMethod" class="form-control" />
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaidAt" class="control-label"></label>
+                <input asp-for="PaidAt" class="form-control" />
+                <span asp-validation-for="PaidAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Summary" class="control-label"></label>
+                <input asp-for="Summary" class="form-control" />
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="admin-form-actions">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a class="admin-button admin-button-secondary" asp-action="Index">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

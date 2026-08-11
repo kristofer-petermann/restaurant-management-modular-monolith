@@ -1,0 +1,37 @@
+@model WebApp.Areas.Admin.ViewModels.Dashboard.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>@Model.PageTitle</h1>
+        <p>@Model.Subtitle</p>
+    </div>
+</section>
+
+<section class="admin-stats-grid">
+    @foreach (var stat in Model.Stats)
+    {
+        <a class="admin-stat-card" asp-area="Admin" asp-controller="@stat.Controller" asp-action="Index">
+            <span class="admin-stat-label">@stat.Label</span>
+            <strong class="admin-stat-value">@stat.Value</strong>
+        </a>
+    }
+</section>
+
+<section class="admin-quick-grid" aria-label="Quick actions">
+    <a class="admin-quick-card" asp-area="Admin" asp-controller="Restaurants" asp-action="Create">
+        <strong>New restaurant</strong>
+        <span>Add a restaurant profile, contact details, and summary.</span>
+    </a>
+    <a class="admin-quick-card" asp-area="Admin" asp-controller="MenuItems" asp-action="Create">
+        <strong>New menu item</strong>
+        <span>Create an item and connect it to the correct menu.</span>
+    </a>
+    <a class="admin-quick-card" asp-area="Admin" asp-controller="Orders" asp-action="Index">
+        <strong>Review orders</strong>
+        <span>Open the operational order list for follow-up.</span>
+    </a>
+</section>

@@ -1,0 +1,53 @@
+@model Shared.Contracts.Restaurants.RestaurantDto
+
+@{
+    ViewData["Title"] = "Restaurant details";
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>@Model!.RestaurantName</h1>
+        <p>Restaurant profile and public contact information.</p>
+    </div>
+    <div class="admin-page-actions">
+        <a class="admin-button admin-button-primary" asp-action="Edit" asp-route-id="@Model!.Id">Edit restaurant</a>
+        <a class="admin-button admin-button-secondary" asp-action="Index">Back to restaurants</a>
+    </div>
+</section>
+
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.RestaurantName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.RestaurantName)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Description)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Description)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Phone)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Phone)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Email)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Summary)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Summary)
+    </dd>
+</dl>

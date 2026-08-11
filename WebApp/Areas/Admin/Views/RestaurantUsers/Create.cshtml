@@ -1,0 +1,52 @@
+@model WebApp.Areas.Admin.ViewModels.RestaurantUser.RestaurantUserCreateViewModel
+
+@{
+    ViewData["Title"] = "Create restaurant user";
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>Create restaurant user</h1>
+        <p>Connect a user to a restaurant with the correct management role.</p>
+    </div>
+</section>
+<div class="row">
+    <div class="col-md-4">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="RestaurantId" class="control-label"></label>
+            <select asp-for="RestaurantId" class="form-select" asp-items="Model.RestaurantOptions"></select>
+            <span asp-validation-for="RestaurantId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserId" class="control-label"></label>
+            <select asp-for="UserId" class="form-select" asp-items="Model.UserOptions"></select>
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserRole" class="control-label"></label>
+            <select asp-for="UserRole" class="form-select" asp-items="Html.GetEnumSelectList<Shared.Contracts.Identity.RestaurantUserRole>()"></select>
+            <span asp-validation-for="UserRole" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Role" class="control-label"></label>
+            <input asp-for="Role" class="form-control" />
+            <span asp-validation-for="Role" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Summary" class="control-label"></label>
+            <input asp-for="Summary" class="form-control" />
+            <span asp-validation-for="Summary" class="text-danger"></span>
+        </div>
+        <div class="admin-form-actions">
+            <input type="submit" value="Create restaurant user" class="btn btn-primary" />
+            <a class="admin-button admin-button-secondary" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

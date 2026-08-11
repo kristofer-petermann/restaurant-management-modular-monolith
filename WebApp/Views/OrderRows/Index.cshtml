@@ -1,0 +1,71 @@
+@model IEnumerable<Shared.Contracts.Orders.OrderRowDto>
+
+@{
+    ViewData["Title"] = "Index";
+    var canManage = User.Identity?.IsAuthenticated == true;
+}
+
+<h1>Index</h1>
+
+@if (canManage)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @($"{item.Order?.User?.Email ?? item.Order?.UserId.ToString()} - {item.Order?.CreatedAt:yyyy-MM-dd HH:mm}")
+            </td>
+            <td>
+                @(item.MenuItem?.Name ?? item.Summary ?? item.MenuItemId.ToString())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                @if (canManage)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    @:|
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @if (canManage)
+                {
+                    @:|
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

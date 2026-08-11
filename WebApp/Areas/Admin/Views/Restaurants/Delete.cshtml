@@ -1,0 +1,48 @@
+@model Shared.Contracts.Restaurants.RestaurantDto
+
+@{
+    ViewData["Title"] = "Delete restaurant";
+}
+
+<section class="admin-danger-panel">
+    <h1>Delete restaurant</h1>
+    <p>This action removes the restaurant record. Review the details before confirming.</p>
+</section>
+
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.RestaurantName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.RestaurantName)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Description)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Description)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Phone)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Phone)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Email)
+    </dd>
+</dl>
+
+<form asp-action="Delete" class="mt-3">
+    <input type="hidden" asp-for="Id" />
+    <div class="admin-form-actions">
+        <input type="submit" value="Delete restaurant" class="btn btn-danger" />
+        <a class="admin-button admin-button-secondary" asp-action="Index">Cancel</a>
+    </div>
+</form>

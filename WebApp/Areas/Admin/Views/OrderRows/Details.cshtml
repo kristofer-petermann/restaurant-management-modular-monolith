@@ -1,0 +1,57 @@
+@model Shared.Contracts.Orders.OrderRowDto
+
+@{
+    ViewData["Title"] = "Order row details";
+    var canManage = User.Identity?.IsAuthenticated == true;
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>Order row details</h1>
+        <p>Order line item, quantity, price, total, and summary.</p>
+    </div>
+    <div class="admin-page-actions">
+        @if (canManage)
+        {
+            <a class="admin-button admin-button-primary" asp-action="Edit" asp-route-id="@Model!.Id">Edit order row</a>
+        }
+        <a class="admin-button admin-button-secondary" asp-action="Index">Back to order rows</a>
+    </div>
+</section>
+
+<div>
+    <h4>OrderRow</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Order)
+        </dt>
+        <dd class = "col-sm-10">
+            @($"{Model!.Order?.User?.Email ?? Model!.Order?.UserId.ToString()} - {Model!.Order?.CreatedAt:yyyy-MM-dd HH:mm}")
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MenuItem)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model!.MenuItem?.Name ?? Model!.MenuItemId.ToString())
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Summary)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Summary)
+        </dd>
+    </dl>
+</div>

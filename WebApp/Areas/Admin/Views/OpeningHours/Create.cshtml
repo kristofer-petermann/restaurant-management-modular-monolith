@@ -1,0 +1,52 @@
+@model WebApp.Areas.Admin.ViewModels.OpeningHour.OpeningHourCreateViewModel
+
+@{
+    ViewData["Title"] = "Create opening hour";
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>Create opening hour</h1>
+        <p>Add a restaurant opening window for a day of the week.</p>
+    </div>
+</section>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RestaurantId" class="control-label"></label>
+                <select asp-for="RestaurantId" class="form-control" asp-items="Model.RestaurantOptions"></select>
+                <span asp-validation-for="RestaurantId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DayOfWeek" class="control-label"></label>
+                <input asp-for="DayOfWeek" class="form-control" />
+                <span asp-validation-for="DayOfWeek" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpenTime" class="control-label"></label>
+                <input asp-for="OpenTime" class="form-control" />
+                <span asp-validation-for="OpenTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CloseTime" class="control-label"></label>
+                <input asp-for="CloseTime" class="form-control" />
+                <span asp-validation-for="CloseTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Summary" class="control-label"></label>
+                <input asp-for="Summary" class="form-control" />
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+            <div class="admin-form-actions">
+                <input type="submit" value="Create opening hour" class="btn btn-primary" />
+                <a class="admin-button admin-button-secondary" asp-action="Index">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

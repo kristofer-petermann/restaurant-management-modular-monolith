@@ -1,0 +1,4 @@
+# Temporary allowlist for WebApp references to module Application DTO namespaces.
+# Format:
+# relative/path/to/file.cs -> using Modules.<Module>.Application.Dto;
+# Each entry should be removed once WebApp is moved to module public contracts/APIs.

@@ -1,0 +1,62 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="User" xml:space="preserve">
+        <value>Kasutaja</value>
+    </data>
+    <data name="Homepage" xml:space="preserve">
+        <value>Avaleht</value>
+    </data>
+    <data name="Privacy" xml:space="preserve">
+        <value>Privaatsus</value>
+    </data>
+    <data name="Logingreeting" xml:space="preserve">
+        <value>Tere</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Logi välja</value>
+    </data>
+    <data name="Addresses" xml:space="preserve">
+        <value>Aadressid</value>
+    </data>
+    <data name="MenuCategories" xml:space="preserve">
+        <value>Menüü kategooriad</value>
+    </data>
+    <data name="MenuItems" xml:space="preserve">
+        <value>Menüü üksused</value>
+    </data>
+    <data name="Menus" xml:space="preserve">
+        <value>Menüüd</value>
+    </data>
+    <data name="OpeningHours" xml:space="preserve">
+        <value>Lahtiolekuajad</value>
+    </data>
+    <data name="OrderRows" xml:space="preserve">
+        <value>Tellimuse read</value>
+    </data>
+    <data name="Orders" xml:space="preserve">
+        <value>Tellimused</value>
+    </data>
+    <data name="Payments" xml:space="preserve">
+        <value>Maksed</value>
+    </data>
+    <data name="Restaurants" xml:space="preserve">
+        <value>Restoranid</value>
+    </data>
+    <data name="RestaurantUsers" xml:space="preserve">
+        <value>Restorani kasutajad</value>
+    </data>
+    <data name="Reviews" xml:space="preserve">
+        <value>Arvustused</value>
+    </data>
+</root>

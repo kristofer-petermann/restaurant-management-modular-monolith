@@ -1,0 +1,75 @@
+@model IEnumerable<Shared.Contracts.Orders.OrderRowDto>
+
+@{
+    ViewData["Title"] = App.Resources.Views.Home.OrderRows;
+    var canManage = User.Identity?.IsAuthenticated == true;
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>@(App.Resources.Views.Home.OrderRows)</h1>
+        <p>Inspect and maintain individual line items attached to orders.</p>
+    </div>
+    @if (canManage)
+    {
+        <div class="admin-page-actions">
+            <a class="admin-button admin-button-primary" asp-action="Create">New order row</a>
+        </div>
+    }
+</section>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @($"{item.Order?.User?.Email ?? item.Order?.UserId.ToString()} - {item.Order?.CreatedAt:yyyy-MM-dd HH:mm}")
+            </td>
+            <td>
+                @(item.MenuItem?.Name ?? item.Summary ?? item.MenuItemId.ToString())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                <div class="admin-table-actions">
+                    @if (canManage)
+                    {
+                        <a class="admin-row-action" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a class="admin-row-action" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (canManage)
+                    {
+                        <a class="admin-row-action danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

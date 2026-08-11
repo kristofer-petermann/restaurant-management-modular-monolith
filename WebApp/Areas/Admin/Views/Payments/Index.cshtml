@@ -1,0 +1,81 @@
+@model IEnumerable<Shared.Contracts.Orders.PaymentDto>
+
+@{
+    ViewData["Title"] = App.Resources.Views.Home.Payments;
+    var canManage = User.Identity?.IsAuthenticated == true && (User.IsInRole("root") || User.IsInRole("admin"));
+}
+
+<section class="admin-page-header">
+    <div>
+        <h1>@(App.Resources.Views.Home.Payments)</h1>
+        <p>Review payment records, methods, statuses, and related orders.</p>
+    </div>
+    @if (canManage)
+    {
+        <div class="admin-page-actions">
+            <a class="admin-button admin-button-primary" asp-action="Create">New payment</a>
+        </div>
+    }
+</section>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaidAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @($"{item.Order?.User?.Email ?? item.Order?.UserId.ToString()} - {item.Order?.CreatedAt:yyyy-MM-dd HH:mm}")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaidAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                <div class="admin-table-actions">
+                    @if (canManage)
+                    {
+                        <a class="admin-row-action" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a class="admin-row-action" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (canManage)
+                    {
+                        <a class="admin-row-action danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

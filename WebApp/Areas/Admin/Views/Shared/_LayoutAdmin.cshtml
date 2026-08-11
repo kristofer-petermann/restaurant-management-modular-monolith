@@ -1,0 +1,86 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Dashboard";
+    var pageTitle = $"{ViewData["Title"] ?? currentController} - Admin";
+}
+<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@pageTitle</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+    <aside class="admin-sidebar" aria-label="Admin navigation">
+        <a class="admin-brand" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+            <span class="admin-brand-mark">O</span>
+            <span>
+                <strong>Order Admin</strong>
+                <small>Operations console</small>
+            </span>
+        </a>
+
+        <nav class="admin-nav">
+            <div class="admin-nav-group">
+                <span class="admin-nav-heading">Overview</span>
+                <a class="admin-nav-link @(currentController == "Dashboard" ? "active" : "")" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+            </div>
+            <div class="admin-nav-group">
+                <span class="admin-nav-heading">Content</span>
+                <a class="admin-nav-link @(currentController == "Restaurants" ? "active" : "")" asp-area="Admin" asp-controller="Restaurants" asp-action="Index">@(App.Resources.Views.Home.Restaurants)</a>
+                <a class="admin-nav-link @(currentController == "Menus" ? "active" : "")" asp-area="Admin" asp-controller="Menus" asp-action="Index">@(App.Resources.Views.Home.Menus)</a>
+                <a class="admin-nav-link @(currentController == "MenuItems" ? "active" : "")" asp-area="Admin" asp-controller="MenuItems" asp-action="Index">@(App.Resources.Views.Home.MenuItems)</a>
+                <a class="admin-nav-link @(currentController == "MenuCategories" ? "active" : "")" asp-area="Admin" asp-controller="MenuCategories" asp-action="Index">@(App.Resources.Views.Home.MenuCategories)</a>
+            </div>
+            <div class="admin-nav-group">
+                <span class="admin-nav-heading">Operations</span>
+                <a class="admin-nav-link @(currentController == "Orders" ? "active" : "")" asp-area="Admin" asp-controller="Orders" asp-action="Index">@(App.Resources.Views.Home.Orders)</a>
+                <a class="admin-nav-link @(currentController == "OrderRows" ? "active" : "")" asp-area="Admin" asp-controller="OrderRows" asp-action="Index">@(App.Resources.Views.Home.OrderRows)</a>
+                <a class="admin-nav-link @(currentController == "Payments" ? "active" : "")" asp-area="Admin" asp-controller="Payments" asp-action="Index">@(App.Resources.Views.Home.Payments)</a>
+                <a class="admin-nav-link @(currentController == "Reviews" ? "active" : "")" asp-area="Admin" asp-controller="Reviews" asp-action="Index">@(App.Resources.Views.Home.Reviews)</a>
+            </div>
+            <div class="admin-nav-group">
+                <span class="admin-nav-heading">Setup</span>
+                <a class="admin-nav-link @(currentController == "Addresses" ? "active" : "")" asp-area="Admin" asp-controller="Addresses" asp-action="Index">@(App.Resources.Views.Home.Addresses)</a>
+                <a class="admin-nav-link @(currentController == "OpeningHours" ? "active" : "")" asp-area="Admin" asp-controller="OpeningHours" asp-action="Index">@(App.Resources.Views.Home.OpeningHours)</a>
+                <a class="admin-nav-link @(currentController == "RestaurantUsers" ? "active" : "")" asp-area="Admin" asp-controller="RestaurantUsers" asp-action="Index">@(App.Resources.Views.Home.RestaurantUsers)</a>
+            </div>
+            <div class="admin-nav-group">
+                <span class="admin-nav-heading">System</span>
+                <a class="admin-nav-link" href="/swagger" target="_blank" rel="noreferrer">Swagger</a>
+            </div>
+        </nav>
+    </aside>
+
+    <div class="admin-workspace">
+        <header class="admin-topbar">
+            <div>
+                <span class="admin-context-label">Admin area</span>
+                <strong>@(ViewData["Title"] ?? currentController)</strong>
+            </div>
+            <div class="admin-toolbar">
+                <partial name="~/Views/Shared/_LanguageSelection.cshtml" />
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span class="admin-user-name">@User.Identity?.Name</span>
+                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="admin-logout-btn">@(App.Resources.Views.Home.Logout)</button>
+                    </form>
+                }
+            </div>
+        </header>
+
+        <main role="main" class="admin-main">
+            @RenderBody()
+        </main>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
