@@ -4,7 +4,7 @@ A web-based platform for managing restaurants, including menu management, order 
 
 ## Public URL
 
-**Live Application:** https://krpetg-restaurantorder-monolith.proxy.itcollege.ee/
+**Live Application:** -
 
 ## Technology Stack
 
